@@ -1,0 +1,3 @@
+[submodule "neotrinity"]
+	path = neotrinity
+	url = https://github.com/zuzunza-com/neotrinity

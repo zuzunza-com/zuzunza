@@ -1,0 +1,29 @@
+{
+  "name": "zuzunza-dump-utility",
+  "version": "1.0.0",
+  "description": "암호화된 데이터베이스 덤프 및 복원 유틸리티",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dump": "node index.js dump",
+    "restore": "node index.js restore",
+    "restore-replace": "node index.js restore --mode=replace",
+    "restore-merge": "node index.js restore --mode=merge"
+  },
+  "keywords": [
+    "database",
+    "dump",
+    "restore",
+    "encryption",
+    "postgresql"
+  ],
+  "author": "Zuzunza",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.0.0",
+    "ora": "^8.0.1",
+    "inquirer": "^9.2.15"
+  }
+}
+

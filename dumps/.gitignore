@@ -1,0 +1,9 @@
+node_modules/
+*.dump
+*.encrypted
+*.sql
+!.gitkeep
+.env
+.env.local
+*.log
+

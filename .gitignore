@@ -1,0 +1,25 @@
+# Gateway 폴더 전체 제외
+gateway/
+blogs/
+
+# 독립 저장소들 (별도 Git 저장소로 관리)
+sysnox/
+discord-bot/
+
+# Dumps 폴더의 덤프 파일들 제외 (폴더는 유지)
+dumps/*.sql
+dumps/*.dump
+
+# 환경 변수 파일 (민감 정보 보호)
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# 기타 일반적인 제외 파일들
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
