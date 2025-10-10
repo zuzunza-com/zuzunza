@@ -6,9 +6,7 @@
   "type": "module",
   "scripts": {
     "dump": "node index.js dump",
-    "restore": "node index.js restore",
-    "restore-replace": "node index.js restore --mode=replace",
-    "restore-merge": "node index.js restore --mode=merge"
+    "restore": "node index.js restore"
   },
   "keywords": [
     "database",

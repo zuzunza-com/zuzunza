@@ -5,5 +5,7 @@ node_modules/
 !.gitkeep
 .env
 .env.local
+.env.cron
 *.log
+logs/
 

@@ -1,9 +1,10 @@
 /**
  * 데이터베이스 덤프 및 복원 유틸리티
+ * PostgreSQL 17 호환
  */
 
 import { spawn } from 'child_process';
-import { existsSync, unlinkSync } from 'fs';
+import { existsSync, unlinkSync, createWriteStream } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -11,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 /**
- * PostgreSQL 덤프 생성
+ * PostgreSQL 전체 덤프 생성 (psql plain SQL format)
  * @param {object} dbConfig - 데이터베이스 설정
  * @param {string} outputPath - 출력 파일 경로
  * @param {object} options - 덤프 옵션
@@ -24,12 +25,12 @@ export async function createDump(dbConfig, outputPath, options = {}) {
       '-p', String(dbConfig.port),
       '-U', dbConfig.user,
       '-d', dbConfig.database,
-      '-f', outputPath,
-      '--format=custom', // 커스텀 포맷 (압축 지원)
-      '--compress=9',    // 최대 압축
-      '--verbose',
-      '--no-owner',      // 소유자 정보 제외
-      '--no-acl',        // 권한 정보 제외
+      '--no-owner',           // 소유자 정보 제외
+      '--no-privileges',      // 권한 정보 제외 (--no-acl 대신)
+      '--if-exists',          // DROP 문에 IF EXISTS 추가
+      '--clean',              // DROP 문 포함
+      '--create',             // CREATE DATABASE 포함하지 않음 (통갈이 모드용)
+      '--verbose'
     ];
     
     // 특정 테이블만 덤프하는 경우
@@ -59,9 +60,14 @@ export async function createDump(dbConfig, outputPath, options = {}) {
       PGPASSWORD: dbConfig.password
     };
     
+    // pg_dump로 SQL 덤프 생성
     const pgDump = spawn('pg_dump', args, { env });
+    const output = createWriteStream(outputPath);
     
     let stderr = '';
+    
+    // stdout을 파일로 리다이렉트
+    pgDump.stdout.pipe(output);
     
     pgDump.stderr.on('data', (data) => {
       stderr += data.toString();
@@ -71,6 +77,7 @@ export async function createDump(dbConfig, outputPath, options = {}) {
     });
     
     pgDump.on('close', (code) => {
+      output.end();
       if (code === 0) {
         resolve();
       } else {
@@ -79,15 +86,17 @@ export async function createDump(dbConfig, outputPath, options = {}) {
     });
     
     pgDump.on('error', (error) => {
+      output.end();
       reject(new Error(`pg_dump 실행 실패: ${error.message}`));
     });
   });
 }
 
 /**
- * PostgreSQL 덤프 복원 - 갈아엎기 모드 (DROP & CREATE)
+ * PostgreSQL 전체 덤프 복원 - 통갈이 모드 (psql 기반)
+ * 기존 데이터베이스를 완전히 DROP하고 새로 복원
  * @param {object} dbConfig - 데이터베이스 설정
- * @param {string} dumpPath - 덤프 파일 경로
+ * @param {string} dumpPath - 덤프 파일 경로 (SQL 파일)
  * @param {object} options - 복원 옵션
  * @returns {Promise<void>}
  */
@@ -102,12 +111,8 @@ export async function restoreDumpReplace(dbConfig, dumpPath, options = {}) {
       '-p', String(dbConfig.port),
       '-U', dbConfig.user,
       '-d', dbConfig.database,
-      '--verbose',
-      '--clean',           // 기존 객체 삭제
-      '--if-exists',       // 객체가 없어도 오류 무시
-      '--no-owner',
-      '--no-acl',
-      dumpPath
+      '-v', 'ON_ERROR_STOP=1',  // 에러 발생 시 중단
+      '-f', dumpPath             // SQL 파일 실행
     ];
     
     // 단일 트랜잭션으로 실행 (원자성 보장)
@@ -115,114 +120,40 @@ export async function restoreDumpReplace(dbConfig, dumpPath, options = {}) {
       args.push('--single-transaction');
     }
     
-    // 특정 테이블만 복원
-    if (options.tables && Array.isArray(options.tables)) {
-      options.tables.forEach(table => {
-        args.push('-t', table);
-      });
-    }
-    
     const env = {
       ...process.env,
       PGPASSWORD: dbConfig.password
     };
     
-    const pgRestore = spawn('pg_restore', args, { env });
+    const psql = spawn('psql', args, { env });
     
+    let stdout = '';
     let stderr = '';
     
-    pgRestore.stderr.on('data', (data) => {
+    psql.stdout.on('data', (data) => {
+      stdout += data.toString();
+      if (options.onProgress) {
+        options.onProgress(data.toString());
+      }
+    });
+    
+    psql.stderr.on('data', (data) => {
       stderr += data.toString();
       if (options.onProgress) {
         options.onProgress(data.toString());
       }
     });
     
-    pgRestore.on('close', (code) => {
-      // pg_restore는 경고가 있어도 0이 아닌 코드를 반환할 수 있음
-      // 하지만 실제 오류인지 확인 필요
-      if (code === 0 || (code === 1 && !stderr.includes('ERROR'))) {
+    psql.on('close', (code) => {
+      if (code === 0) {
         resolve();
       } else {
-        reject(new Error(`pg_restore 실패 (코드: ${code})\n${stderr}`));
+        reject(new Error(`psql 복원 실패 (코드: ${code})\n${stderr}`));
       }
     });
     
-    pgRestore.on('error', (error) => {
-      reject(new Error(`pg_restore 실행 실패: ${error.message}`));
-    });
-  });
-}
-
-/**
- * PostgreSQL 덤프 복원 - 덮어쓰기 모드 (UPDATE/INSERT)
- * @param {object} dbConfig - 데이터베이스 설정
- * @param {string} dumpPath - 덤프 파일 경로
- * @param {object} options - 복원 옵션
- * @returns {Promise<void>}
- */
-export async function restoreDumpMerge(dbConfig, dumpPath, options = {}) {
-  if (!existsSync(dumpPath)) {
-    throw new Error(`덤프 파일을 찾을 수 없습니다: ${dumpPath}`);
-  }
-  
-  return new Promise((resolve, reject) => {
-    const args = [
-      '-h', dbConfig.host,
-      '-p', String(dbConfig.port),
-      '-U', dbConfig.user,
-      '-d', dbConfig.database,
-      '--verbose',
-      '--no-owner',
-      '--no-acl',
-      '--data-only',       // 데이터만 복원 (스키마는 유지)
-      dumpPath
-    ];
-    
-    // 단일 트랜잭션으로 실행
-    if (options.singleTransaction !== false) {
-      args.push('--single-transaction');
-    }
-    
-    // 특정 테이블만 복원
-    if (options.tables && Array.isArray(options.tables)) {
-      options.tables.forEach(table => {
-        args.push('-t', table);
-      });
-    }
-    
-    // 오류 발생 시 계속 진행 (덮어쓰기 모드)
-    if (options.continueOnError !== false) {
-      args.push('--no-data-for-failed-tables');
-    }
-    
-    const env = {
-      ...process.env,
-      PGPASSWORD: dbConfig.password
-    };
-    
-    const pgRestore = spawn('pg_restore', args, { env });
-    
-    let stderr = '';
-    
-    pgRestore.stderr.on('data', (data) => {
-      stderr += data.toString();
-      if (options.onProgress) {
-        options.onProgress(data.toString());
-      }
-    });
-    
-    pgRestore.on('close', (code) => {
-      // 덮어쓰기 모드에서는 일부 오류는 정상 (중복 키 등)
-      if (code === 0 || (stderr.includes('duplicate key') || stderr.includes('already exists'))) {
-        resolve();
-      } else {
-        reject(new Error(`pg_restore 실패 (코드: ${code})\n${stderr}`));
-      }
-    });
-    
-    pgRestore.on('error', (error) => {
-      reject(new Error(`pg_restore 실행 실패: ${error.message}`));
+    psql.on('error', (error) => {
+      reject(new Error(`psql 실행 실패: ${error.message}`));
     });
   });
 }
@@ -326,7 +257,7 @@ export async function getDatabaseInfo(dbConfig) {
 }
 
 /**
- * pg_dump/pg_restore 설치 확인
+ * PostgreSQL 도구 설치 확인 (pg_dump, psql)
  * @returns {Promise<boolean>}
  */
 export async function checkPostgresTools() {
@@ -338,11 +269,11 @@ export async function checkPostgresTools() {
     });
   };
   
-  const [hasPgDump, hasPgRestore] = await Promise.all([
+  const [hasPgDump, hasPsql] = await Promise.all([
     checkTool('pg_dump'),
-    checkTool('pg_restore')
+    checkTool('psql')
   ]);
   
-  return hasPgDump && hasPgRestore;
+  return hasPgDump && hasPsql;
 }
 

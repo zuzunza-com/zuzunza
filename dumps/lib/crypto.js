@@ -4,9 +4,10 @@
  */
 
 import crypto from 'crypto';
-import { createReadStream, createWriteStream } from 'fs';
+import { createReadStream, createWriteStream, readFileSync } from 'fs';
 import { pipeline } from 'stream/promises';
 import { createGzip, createGunzip } from 'zlib';
+import { Readable } from 'stream';
 
 const ALGORITHM = 'aes-256-gcm';
 const KEY_LENGTH = 32; // 256 bits
@@ -94,8 +95,7 @@ export async function encryptFile(inputPath, outputPath, password) {
 export async function decryptFile(inputPath, outputPath, password) {
   return new Promise((resolve, reject) => {
     try {
-      const fs = require('fs');
-      const fileBuffer = fs.readFileSync(inputPath);
+      const fileBuffer = readFileSync(inputPath);
       
       // 헤더에서 salt와 iv 추출
       const salt = fileBuffer.subarray(0, SALT_LENGTH);
@@ -120,7 +120,6 @@ export async function decryptFile(inputPath, outputPath, password) {
       const output = createWriteStream(outputPath);
       
       // 암호화된 데이터를 버퍼로 변환하여 처리
-      const { Readable } = require('stream');
       const encryptedStream = Readable.from(encryptedData);
       
       // 스트림 파이프라인

@@ -18,8 +18,7 @@ import { getDatabaseConfig, getAvailableEnvironments, maskSensitiveInfo } from '
 import { encryptFile, decryptFile, validatePassword, calculateFileHash } from './lib/crypto.js';
 import { 
   createDump, 
-  restoreDumpReplace, 
-  restoreDumpMerge,
+  restoreDumpReplace,
   testConnection,
   getDatabaseInfo,
   checkPostgresTools
@@ -100,10 +99,10 @@ program
       const spinner = ora('PostgreSQL 도구 확인 중...').start();
       const hasTools = await checkPostgresTools();
       if (!hasTools) {
-        spinner.fail('pg_dump/pg_restore가 설치되어 있지 않습니다.');
+        spinner.fail('pg_dump/psql이 설치되어 있지 않습니다.');
         console.log(chalk.yellow('\nPostgreSQL 클라이언트 도구를 설치해주세요:'));
-        console.log(chalk.gray('  Ubuntu/Debian: sudo apt-get install postgresql-client'));
-        console.log(chalk.gray('  macOS: brew install postgresql'));
+        console.log(chalk.gray('  Ubuntu/Debian: sudo apt-get install postgresql-client-17'));
+        console.log(chalk.gray('  macOS: brew install postgresql@17'));
         process.exit(1);
       }
       spinner.succeed('PostgreSQL 도구 확인 완료');
@@ -159,28 +158,36 @@ program
       // 암호화 비밀번호 입력
       let password = options.password;
       if (options.encrypt !== false && !password) {
-        const answers = await inquirer.prompt([
-          {
-            type: 'password',
-            name: 'password',
-            message: '암호화 비밀번호를 입력하세요 (12자 이상, 대소문자/숫자/특수문자 포함):',
-            mask: '*',
-            validate: (input) => {
-              const validation = validatePassword(input);
-              return validation.valid || validation.message;
+        // .env에서 자동 로드 시도
+        password = loadPasswordFromEnv();
+        
+        if (password) {
+          console.log(chalk.green('\n✓ .env 파일에서 비밀번호를 자동으로 로드했습니다.'));
+        } else {
+          // 자동 로드 실패 시 대화형 입력
+          const answers = await inquirer.prompt([
+            {
+              type: 'password',
+              name: 'password',
+              message: '암호화 비밀번호를 입력하세요 (12자 이상, 대소문자/숫자/특수문자 포함):',
+              mask: '*',
+              validate: (input) => {
+                const validation = validatePassword(input);
+                return validation.valid || validation.message;
+              }
+            },
+            {
+              type: 'password',
+              name: 'passwordConfirm',
+              message: '비밀번호를 다시 입력하세요:',
+              mask: '*',
+              validate: (input, answers) => {
+                return input === answers.password || '비밀번호가 일치하지 않습니다.';
+              }
             }
-          },
-          {
-            type: 'password',
-            name: 'passwordConfirm',
-            message: '비밀번호를 다시 입력하세요:',
-            mask: '*',
-            validate: (input, answers) => {
-              return input === answers.password || '비밀번호가 일치하지 않습니다.';
-            }
-          }
-        ]);
-        password = answers.password;
+          ]);
+          password = answers.password;
+        }
       }
       
       // 덤프 생성
@@ -263,15 +270,63 @@ program
   });
 
 /**
- * 복원 명령어
+ * 최신 덤프 파일 찾기
+ */
+function findLatestDumpFile(env) {
+  const { readdirSync } = require('fs');
+  
+  try {
+    const files = readdirSync(__dirname)
+      .filter(f => f.startsWith(`zuzunza_${env}_`) && f.endsWith('.dump.encrypted'))
+      .map(f => ({
+        name: f,
+        path: join(__dirname, f),
+        mtime: statSync(join(__dirname, f)).mtime
+      }))
+      .sort((a, b) => b.mtime - a.mtime);
+    
+    return files.length > 0 ? files[0].path : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+/**
+ * 환경변수 또는 .env 파일에서 비밀번호 로드
+ */
+function loadPasswordFromEnv() {
+  // 환경변수에서 우선 확인
+  if (process.env.DUMP_PASSWORD) {
+    return process.env.DUMP_PASSWORD;
+  }
+  
+  // .env 파일에서 로드
+  const envPath = join(__dirname, '.env');
+  if (existsSync(envPath)) {
+    try {
+      const { readFileSync } = require('fs');
+      const envContent = readFileSync(envPath, 'utf-8');
+      const match = envContent.match(/DUMP_PASSWORD=(.+)/);
+      if (match && match[1]) {
+        return match[1].trim().replace(/['"]/g, '');
+      }
+    } catch (error) {
+      // .env 파일 읽기 실패 시 무시
+    }
+  }
+  
+  return null;
+}
+
+/**
+ * 복원 명령어 (통갈이 모드만 지원)
  */
 program
   .command('restore')
-  .description('데이터베이스 복원 (복호화)')
+  .description('데이터베이스 복원 - 통갈이 모드 (기존 데이터 완전 삭제 후 복원)')
   .option('-e, --env <environment>', '환경 선택 (development/production)', 'production')
-  .option('-f, --file <path>', '덤프 파일 경로 (필수)', null)
-  .option('-p, --password <password>', '복호화 비밀번호')
-  .option('-m, --mode <mode>', '복원 모드 (replace/merge)', 'replace')
+  .option('-f, --file <path>', '덤프 파일 경로 (미지정시 최신 파일 자동 선택)', null)
+  .option('-p, --password <password>', '복호화 비밀번호 (미지정시 .env에서 자동 로드)')
   .option('--no-decrypt', '복호화하지 않음 (평문 덤프)')
   .option('--force', '확인 없이 실행')
   .action(async (options) => {
@@ -304,26 +359,42 @@ program
     });
     
     try {
-      // 파일 경로 확인
-      if (!options.file) {
-        console.log(chalk.red('❌ 덤프 파일 경로를 지정해주세요. (-f 옵션)'));
+      // 파일 경로 확인 및 자동 선택
+      let dumpFilePath = options.file;
+      
+      if (!dumpFilePath) {
+        console.log(chalk.cyan('📂 덤프 파일이 지정되지 않았습니다. 최신 파일을 찾는 중...\n'));
+        dumpFilePath = findLatestDumpFile(options.env);
+        
+        if (!dumpFilePath) {
+          console.log(chalk.red(`❌ ${options.env} 환경의 덤프 파일을 찾을 수 없습니다.`));
+          console.log(chalk.yellow('파일을 직접 지정하려면 -f 옵션을 사용하세요.\n'));
+          process.exit(1);
+        }
+        
+        console.log(chalk.green(`✓ 최신 덤프 파일 발견: ${require('path').basename(dumpFilePath)}\n`));
+      }
+      
+      if (!existsSync(dumpFilePath)) {
+        console.log(chalk.red(`❌ 파일을 찾을 수 없습니다: ${dumpFilePath}`));
         process.exit(1);
       }
       
-      if (!existsSync(options.file)) {
-        console.log(chalk.red(`❌ 파일을 찾을 수 없습니다: ${options.file}`));
-        process.exit(1);
-      }
-      
-      const fileSize = statSync(options.file).size;
-      console.log(chalk.gray(`📁 덤프 파일: ${options.file}`));
+      const fileSize = statSync(dumpFilePath).size;
+      console.log(chalk.gray(`📁 덤프 파일: ${dumpFilePath}`));
       console.log(chalk.gray(`📦 파일 크기: ${formatBytes(fileSize)}`));
+      
+      // 파일 경로 업데이트
+      options.file = dumpFilePath;
       
       // PostgreSQL 도구 확인
       const spinner = ora('PostgreSQL 도구 확인 중...').start();
       const hasTools = await checkPostgresTools();
       if (!hasTools) {
-        spinner.fail('pg_dump/pg_restore가 설치되어 있지 않습니다.');
+        spinner.fail('pg_dump/psql이 설치되어 있지 않습니다.');
+        console.log(chalk.yellow('\nPostgreSQL 클라이언트 도구를 설치해주세요:'));
+        console.log(chalk.gray('  Ubuntu/Debian: sudo apt-get install postgresql-client-17'));
+        console.log(chalk.gray('  macOS: brew install postgresql@17'));
         process.exit(1);
       }
       spinner.succeed('PostgreSQL 도구 확인 완료');
@@ -347,23 +418,11 @@ program
         process.exit(1);
       }
       
-      // 복원 모드 확인
-      const mode = options.mode.toLowerCase();
-      if (!['replace', 'merge'].includes(mode)) {
-        console.log(chalk.red(`❌ 잘못된 복원 모드: ${mode}`));
-        console.log(chalk.yellow('사용 가능한 모드: replace (갈아엎기), merge (덮어쓰기)'));
-        process.exit(1);
-      }
-      
       // 경고 및 확인
       if (!options.force) {
-        console.log(chalk.yellow.bold(`\n⚠️  경고: ${mode === 'replace' ? '갈아엎기' : '덮어쓰기'} 모드로 복원합니다!\n`));
-        
-        if (mode === 'replace') {
-          console.log(chalk.red('   기존 데이터베이스의 모든 데이터가 삭제됩니다!'));
-        } else {
-          console.log(chalk.yellow('   기존 데이터와 충돌할 수 있습니다.'));
-        }
+        console.log(chalk.yellow.bold('\n⚠️  경고: 통갈이 모드로 복원합니다!\n'));
+        console.log(chalk.red('   기존 데이터베이스의 모든 데이터가 삭제됩니다!'));
+        console.log(chalk.red('   이 작업은 되돌릴 수 없습니다!\n'));
         
         const confirm = await inquirer.prompt([
           {
@@ -389,16 +448,25 @@ program
       // 복호화
       if (options.decrypt !== false) {
         let password = options.password;
+        
+        // 비밀번호가 지정되지 않았으면 자동 로드 시도
         if (!password) {
-          const answers = await inquirer.prompt([
-            {
-              type: 'password',
-              name: 'password',
-              message: '복호화 비밀번호를 입력하세요:',
-              mask: '*'
-            }
-          ]);
-          password = answers.password;
+          password = loadPasswordFromEnv();
+          
+          if (password) {
+            console.log(chalk.green('✓ .env 파일에서 비밀번호를 자동으로 로드했습니다.\n'));
+          } else {
+            // 자동 로드 실패 시 대화형 입력
+            const answers = await inquirer.prompt([
+              {
+                type: 'password',
+                name: 'password',
+                message: '복호화 비밀번호를 입력하세요:',
+                mask: '*'
+              }
+            ]);
+            password = answers.password;
+          }
         }
         
         console.log(chalk.cyan('\n🔓 파일 복호화 중...\n'));
@@ -416,29 +484,20 @@ program
       }
       
       // 복원 실행
-      console.log(chalk.cyan('\n📥 데이터베이스 복원 중...\n'));
-      const restoreSpinner = ora(`${mode === 'replace' ? '갈아엎기' : '덮어쓰기'} 복원 중...`).start();
+      console.log(chalk.cyan('\n📥 데이터베이스 통갈이 복원 중...\n'));
+      const restoreSpinner = ora('데이터베이스 복원 중...').start();
       
       try {
-        if (mode === 'replace') {
-          await restoreDumpReplace(dbConfig, dumpPath, {
-            onProgress: (msg) => {
-              if (msg.includes('processing')) {
-                restoreSpinner.text = `복원 중: ${msg.substring(0, 60)}...`;
-              }
+        await restoreDumpReplace(dbConfig, dumpPath, {
+          onProgress: (msg) => {
+            const cleanMsg = msg.replace(/\n/g, ' ').trim();
+            if (cleanMsg.length > 0) {
+              restoreSpinner.text = `복원 중: ${cleanMsg.substring(0, 60)}...`;
             }
-          });
-        } else {
-          await restoreDumpMerge(dbConfig, dumpPath, {
-            onProgress: (msg) => {
-              if (msg.includes('processing')) {
-                restoreSpinner.text = `복원 중: ${msg.substring(0, 60)}...`;
-              }
-            }
-          });
-        }
+          }
+        });
         
-        restoreSpinner.succeed('데이터베이스 복원 완료');
+        restoreSpinner.succeed('데이터베이스 통갈이 복원 완료');
       } catch (error) {
         restoreSpinner.fail('복원 실패');
         throw error;
