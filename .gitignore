@@ -11,6 +11,7 @@ dumps/
 **/.env
 **/.env.*
 !**/.env.example
+shared-lib/
 
 # 기타 일반적인 제외 파일들
 .DS_Store

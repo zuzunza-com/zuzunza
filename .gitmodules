@@ -13,3 +13,7 @@
 [submodule "ws-server"]
 	path = ws-server
 	url = https://github.com/zuzunza-com/ws-server
+
+[submodule "kidszzanggame"]
+	path = kidszzanggame
+	url = https://github.com/NiSeullent/kidszzanggame
