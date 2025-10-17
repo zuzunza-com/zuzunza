@@ -1,566 +1,455 @@
-# 🌸 Ryllis
+# 🫖 주전자닷컴 (Zuzunza)
 
-**R**eact-**Y**ield **L**ightweight **L**ogic **I**ntegration **S**ystem
+> **창작자를 위한 통합 커뮤니티 플랫폼**
 
-Anemone 프레임워크를 기반으로 만들어진 현대적이고 강력한 위키 엔진 + 블로그 플랫폼
+주전자닷컴은 아티스트, 크리에이터, 게이머들이 모여 창작물을 공유하고 소통하는 종합 온라인 커뮤니티 플랫폼입니다.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Go](https://img.shields.io/badge/Go-1.24+-00ADD8.svg)
-![React](https://img.shields.io/badge/React-19-61DAFB.svg)
+![License](https://img.shields.io/badge/license-Private-red.svg)
+![Platform](https://img.shields.io/badge/platform-Multi--Service-blue.svg)
+![Status](https://img.shields.io/badge/status-Production-green.svg)
 
 ---
 
-## ✨ 주요 특징
+## 🎯 플랫폼 개요
 
-### 🚀 고성능 아키텍처
-- **UDP 기반 RSock 프로토콜**: 초저지연 모듈 간 통신
+주전자닷컴은 단순한 SNS를 넘어 **창작자 생태계를 위한 올인원 플랫폼**입니다. 
+
+### 핵심 가치
+
+- 🎨 **창작의 자유**: 이미지, 영상, 글, 게임 등 모든 형태의 창작물 지원
+- 👥 **실시간 소통**: 통화, 채팅, 라이브 방송으로 언제나 연결
+- 🎮 **즐거운 경험**: 게임 플랫폼과 커뮤니티의 완벽한 조화
+- 🚀 **성장 지원**: 챌린지, 크루 시스템으로 창작자 성장 도모
+- 🔒 **안전한 환경**: 세밀한 권한 관리와 콘텐츠 보호
+
+---
+
+## 🏢 플랫폼 구성
+
+주전자닷컴은 여러 독립적인 서비스들이 유기적으로 연결된 멀티-서비스 플랫폼입니다.
+
+### 1. 주전자 메인 플랫폼 (neoTrinity)
+
+**창작자를 위한 통합 SNS 플랫폼**
+
+#### 📸 콘텐츠 허브
+- **아트워크 갤러리**: 고화질 이미지 업로드 및 전시
+- **동영상 플랫폼**: Cloudflare Stream 기반 영상 스트리밍
+- **커뮤니티 게시판**: 텍스트 포스트 및 토론
+
+#### 👥 소셜 네트워킹
+- **서버 시스템**: Discord 스타일 커뮤니티 서버
+- **크루**: 같은 관심사를 가진 창작자 모임
+- **팔로우 & 피드**: 개인화된 콘텐츠 큐레이션
+
+#### 🎙️ 실시간 커뮤니케이션
+- **1:1 통화**: 음성/영상 통화 (WebRTC)
+- **그룹 통화**: 음성 채널에서 다중 참여자 통화
+- **라이브 스트리밍**: 실시간 방송 및 시청자 채팅
+
+#### 🎮 참여형 콘텐츠
+- **챌린지 시스템**: 주제별 창작 챌린지 및 투표
+- **XP & 레벨**: 활동 기반 경험치 및 보상 시스템
+
+**기술 스택**: Next.js 15, TypeScript, NestJS, Supabase, Redis, Socket.IO
+
+---
+
+### 2. 키즈짱게임 (kidszzanggame)
+
+**플래시게임 & HTML5 게임 플랫폼**
+
+#### 게임 허브
+- **다양한 게임**: 플래시게임 및 HTML5 게임 완벽 지원
+- **실시간 채팅**: Ably 기반 게임별 채팅방
+- **게임 관리**: 카테고리, 태그, 검색 기능
+
+#### 커뮤니티
+- **게임 게시판**: 게임별 공략 및 토론
+- **사용자 프로필**: 게임 플레이 기록 및 통계
+- **반응형 디자인**: 모바일 최적화
+
+**기술 스택**: Next.js 16, React 19, TypeScript, Supabase, Ably, AWS S3
+
+---
+
+### 3. 주전자 위키 (Ryllis)
+
+**차세대 위키 엔진 + 블로그 플랫폼** 🆕
+
+#### 고성능 아키텍처
+- **UDP 기반 RSock**: 초저지연 모듈 간 통신
 - **모듈형 마이크로서비스**: Engine, Renderer, Gateway 독립 운영
-- **SSR (Server-Side Rendering)**: React 19 기반 서버 사이드 렌더링
-- **효율적인 캐싱**: 템플릿 및 데이터 캐싱으로 빠른 응답
+- **React SSR**: React 19 기반 서버 사이드 렌더링
 
-### 📝 위키 + 블로그
+#### 위키 + 블로그
 - **위키 페이지**: 계층 구조, 버전 관리, 히스토리 추적
 - **블로그 포스트**: 카테고리, 태그, 조회수 관리
-- **나무마크 지원**: 나무위키 스타일 마크업 언어
-- **전체 검색**: 위키 + 블로그 통합 검색
+- **나무마크 지원**: 나무위키 스타일 마크업
 
-### 🔐 강력한 인증 시스템
-- **JWT 기반 인증**: 안전한 토큰 기반 인증
-- **세밀한 권한 관리**: 사용자별, 문서별 권한 제어
-- **역할 기반 접근 제어 (RBAC)**: Admin, Editor, Viewer 역할
-- **보호된 문서**: 문서별 읽기/쓰기 권한 설정
+#### 강력한 인증
+- **JWT 기반**: 안전한 토큰 기반 인증
+- **RBAC**: Admin, Editor, Viewer 역할
+- **문서 보호**: 문서별 읽기/쓰기 권한
 
-### 🎨 현대적인 UI/UX
-- **React 19**: 최신 React 기반 SPA
-- **Tailwind CSS**: 반응형 디자인
-- **shadcn/ui**: 아름다운 컴포넌트
-- **다크 모드 지원**: 눈이 편안한 다크 테마
+**기술 스택**: Go 1.24+, React 19, PostgreSQL, UDP RSock 프로토콜
+
+**상태**: 🔄 개발 중 (NextJS 대체 예정)
 
 ---
 
-## 🏗️ 시스템 아키텍처
+### 4. 주요 지원 서비스
+
+#### Discord Bot (YUKINA_BOT)
+- 멤버 스텟 조회 (`/stats`)
+- 팔로우 관리 (`/follow`, `/unfollow`)
+- 작품 조회 (`/artwork`, `/artworks`, `/random-artwork`)
+- AI 채팅 (`/chat`)
+
+**기술**: Discord.js, Supabase
+
+#### WebSocket Server
+- 실시간 통신 인프라
+- Socket.IO 기반
+- 다중 서비스 연결
+
+**기술**: Node.js, Socket.IO, TypeScript
+
+#### Sysnox (시스템 모니터링)
+- 보안 모니터링
+- IP 차단 관리
+- SELinux 로그 관리
+
+**기술**: Node.js
+
+#### Database Dumps
+- 자동 백업 시스템
+- 암호화된 덤프 파일
+- Cron 기반 스케줄링
+
+**기술**: Node.js, PostgreSQL
+
+#### Shared Library
+- Supabase 클라이언트 공유
+- 프로젝트 간 코드 재사용
+- 타입 정의 공유
+
+**기술**: TypeScript
+
+---
+
+## 🏗️ 전체 아키텍처
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                         Client                              │
-│                      (브라우저)                             │
-└───────────────────────────┬─────────────────────────────────┘
-                            │ HTTP :8080
-                            ↓
-                  ┌─────────────────────┐
-                  │     @gateway/       │
-                  │   (HTTP 서버)       │
-                  │   라우팅 & 검증     │
-                  └──────────┬──────────┘
-                             │
-              ┌──────────────┴──────────────┐
-              │                             │
-        engine.rsock                  renderer.rsock
-        (UDP :9001)                   (UDP :9002)
-              │                             │
-              ↓                             ↓
-    ┌──────────────────┐          ┌──────────────────┐
-    │    @engine/      │          │   @renderer/     │
-    │  (비즈니스 로직) │◄─────────│  (React SSR)     │
-    │  데이터베이스    │  데이터   │  템플릿 렌더링   │
-    └──────────────────┘  요청    └──────────────────┘
-              │
-              ↓
-    ┌──────────────────┐
-    │   PostgreSQL     │
-    │   (데이터베이스) │
-    └──────────────────┘
+                    ┌─────────────────────────────────┐
+                    │         사용자 (브라우저)        │
+                    └──────────────┬──────────────────┘
+                                   │
+                    ┌──────────────┴──────────────────┐
+                    │                                 │
+         ┌──────────▼─────────┐          ┌──────────▼─────────┐
+         │   주전자 메인       │          │   키즈짱게임        │
+         │  (neoTrinity)      │          │  (kidszzanggame)   │
+         │  Next.js 15        │          │  Next.js 16        │
+         └──────────┬─────────┘          └──────────┬─────────┘
+                    │                               │
+         ┌──────────┴─────────┐          ┌─────────┴─────────┐
+         │  NestJS Server     │          │  WebSocket Server │
+         │  Redis Sessions    │          │  Ably Realtime    │
+         └──────────┬─────────┘          └─────────┬─────────┘
+                    │                               │
+                    └───────────────┬───────────────┘
+                                    │
+                         ┌──────────▼──────────┐
+                         │   Supabase          │
+                         │   PostgreSQL        │
+                         │   Authentication    │
+                         └──────────┬──────────┘
+                                    │
+                    ┌───────────────┼───────────────┐
+                    │               │               │
+         ┌──────────▼────────┐  ┌──▼─────────┐  ┌─▼─────────┐
+         │  Discord Bot      │  │  Sysnox    │  │  Dumps    │
+         │  (YUKINA)         │  │  Security  │  │  Backup   │
+         └───────────────────┘  └────────────┘  └───────────┘
 
-    @vendor/ (공통 모듈)
-    - rsock (UDP 소켓 프로토콜)
-    - http (HTTP 클라이언트)
-    - db (데이터베이스 연결)
-
-    @site/ (사이트 선언)
-    - .ruststx 파일 파싱
-    - 라우트 레지스트리
+         ┌─────────────────────────────────────────────────────┐
+         │              🆕 차세대 아키텍처 (Ryllis)             │
+         │                                                       │
+         │  ┌──────────┐  ┌───────────┐  ┌──────────────┐     │
+         │  │ Gateway  │◄─┤ Renderer  │◄─┤   Engine     │     │
+         │  │ HTTP     │  │ React SSR │  │   Business   │     │
+         │  │ :8080    │  │ UDP :9002 │  │   UDP :9001  │     │
+         │  └──────────┘  └───────────┘  └──────┬───────┘     │
+         │                                       │              │
+         │                              ┌────────▼────────┐    │
+         │                              │   PostgreSQL    │    │
+         │                              └─────────────────┘    │
+         └─────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🎯 핵심 모듈
+## 🛠️ 기술 스택 요약
 
-### 1. Engine (엔진)
-- **역할**: 핵심 비즈니스 로직
-- **포트**: UDP 9001
-- **기능**:
-  - 위키/블로그 CRUD
-  - 사용자 인증 (JWT)
-  - 권한 관리 (ACL)
-  - 데이터베이스 연동
-  - 검색 기능
+### Frontend
+- **Framework**: Next.js 15/16, React 19
+- **Language**: TypeScript 5.9+
+- **Styling**: Tailwind CSS 4+
+- **UI Components**: Radix UI, shadcn/ui
+- **Animation**: Framer Motion
 
-### 2. Renderer (렌더러)
-- **역할**: 프론트엔드 렌더링
-- **포트**: UDP 9002
-- **기술**: React 19 + Vite
-- **기능**:
-  - SSR (Server-Side Rendering)
-  - 정적 파일 서빙
-  - 템플릿 캐싱
-  - Backend Processed Rendering (BPR)
+### Backend
+- **Server**: NestJS, Next.js API Routes
+- **Language**: Go 1.24+ (Ryllis), Node.js
+- **Database**: PostgreSQL, Supabase
+- **Cache**: Redis
+- **Real-time**: Socket.IO, Ably
 
-### 3. Gateway (게이트웨이)
-- **역할**: HTTP 요청 처리
-- **포트**: HTTP 8080
-- **기능**:
-  - HTTP 서버 운영
-  - 모듈 간 라우팅
-  - 응답 검증
-  - 로깅 & 모니터링
+### Infrastructure
+- **Storage**: Cloudflare R2, AWS S3
+- **Streaming**: Cloudflare Stream
+- **WebRTC**: Cloudflare Realtime
+- **Container**: Docker, Docker Compose
+- **Proxy**: Nginx, Apache2
+
+### DevOps
+- **Package Manager**: pnpm 10+
+- **Build**: Turborepo, Vite
+- **Monitoring**: Sysnox
+- **Backup**: 자동 암호화 덤프
 
 ---
 
-## 🚀 빠른 시작
+## 🚀 로드맵
+
+### Phase 1: 기존 플랫폼 안정화 ✅
+- [x] neoTrinity 메인 플랫폼 구축
+- [x] kidszzanggame 게임 플랫폼 구축
+- [x] Discord Bot 통합
+- [x] WebSocket 인프라
+- [x] 통합 인증 시스템 (Redis)
+
+### Phase 2: Ryllis 위키 엔진 개발 🔄
+- [x] RSock 프로토콜 구현
+- [x] Engine, Renderer, Gateway 모듈
+- [x] 나무마크 파서
+- [x] JWT 인증 시스템
+- [ ] 프로덕션 배포
+- [ ] 성능 최적화
+
+### Phase 3: NextJS → Ryllis 마이그레이션 📋
+- [ ] neoTrinity 일부 기능 Ryllis로 이전
+- [ ] kidszzanggame 일부 기능 Ryllis로 이전
+- [ ] 기능 손상 없이 점진적 전환
+- [ ] 성능 비교 및 튜닝
+
+### Phase 4: 통합 및 확장 🔮
+- [ ] 전체 플랫폼 Ryllis 기반 재구축
+- [ ] 분산 환경 지원
+- [ ] 고급 검색 (ElasticSearch)
+- [ ] GraphQL API
+- [ ] 모니터링 대시보드
+
+---
+
+## 📂 프로젝트 구조
+
+```
+zuzunza/
+├── neotrinity/              # 주전자 메인 플랫폼 (Next.js 15)
+│   ├── src/                 # 소스 코드
+│   ├── infra/               # 인프라 설정
+│   └── docker-compose.yml   # Docker 설정
+│
+├── kidszzanggame/           # 키즈짱게임 (Next.js 16)
+│   ├── app/                 # Next.js App Router
+│   ├── components/          # React 컴포넌트
+│   └── supabase/            # 데이터베이스
+│
+├── ryllis/                  # 🆕 위키 엔진 (Go + React)
+│   ├── engine/              # 백엔드 엔진 (Go)
+│   ├── renderer/            # 프론트엔드 렌더러 (React)
+│   ├── gateway/             # HTTP 게이트웨이
+│   ├── site/                # 사이트 선언 (.ruststx)
+│   └── vendor/              # 공통 모듈 (rsock, db, http)
+│
+├── discord-bot/             # Discord 봇 (YUKINA)
+│   └── src/commands/        # 슬래시 커맨드
+│
+├── ws-server/               # WebSocket 서버
+│   └── src/                 # Socket.IO 서버
+│
+├── shared-lib/              # 공유 라이브러리
+│   └── src/                 # Supabase 클라이언트
+│
+├── sysnox/                  # 시스템 모니터링
+│   └── lib/                 # 보안 및 로그 관리
+│
+├── dumps/                   # 데이터베이스 백업
+│   ├── auto-dump.sh         # 자동 백업 스크립트
+│   └── *.dump.encrypted     # 암호화된 덤프
+│
+├── gateway/                 # 게이트웨이 (Apache2/Nginx)
+│   ├── apache2/             # Apache 설정
+│   └── public/              # 정적 파일
+│
+├── blogs/                   # 레거시 블로그 (PHP)
+│   └── ...                  # PHP 블로그 시스템
+│
+├── fallback-site/           # 폴백 사이트
+│   └── index.php            # 오류 페이지
+│
+└── pnpm-workspace.yaml      # Monorepo 설정
+```
+
+---
+
+## 🔧 개발 환경 설정
 
 ### 사전 요구사항
 
+#### 주전자 메인 & 키즈짱게임
+- Node.js 18+
+- pnpm 10.11.0+
+- Docker & Docker Compose
+
+#### Ryllis 위키
 - Go 1.24+
 - Node.js 18+
 - PostgreSQL 13+
 
-### 1. 데이터베이스 설정
+### 설치 및 실행
 
 ```bash
-# PostgreSQL 데이터베이스 생성
-sudo -u postgres createdb blogs
+# 1. 저장소 클론
+git clone <repository-url>
+cd zuzunza
 
-# 스키마 초기화
-sudo -u postgres psql blogs < /srv/zuzunza/ryllis/db_schema.sql
-```
+# 2. 의존성 설치 (Monorepo)
+pnpm install
 
-### 2. 프로젝트 빌드
+# 3. 환경 변수 설정
+# 각 프로젝트별 .env 파일 생성 필요
+cp neotrinity/.env.example neotrinity/.env
+cp kidszzanggame/.env.example kidszzanggame/.env
 
-```bash
-cd /srv/zuzunza/ryllis
+# 4. 주전자 메인 실행
+cd neotrinity
+pnpm dev
+# → http://localhost:3000
 
-# Makefile로 전체 빌드 (권장)
+# 5. 키즈짱게임 실행
+cd kidszzanggame
+pnpm dev
+# → http://localhost:3090
+
+# 6. Ryllis 위키 실행
+cd ryllis
 make build
-
-# 또는 수동 빌드
-cd renderer/react && npm install && npm run build
-cd ../../engine && go build -o ../bin/anemone-engine
-cd ../renderer && go build -o ../bin/anemone-renderer
-cd ../gateway && go build -o ../bin/anemone-gateway
-```
-
-### 3. 서비스 실행
-
-```bash
-# Makefile 사용 (권장)
 make dev
+# → http://localhost:8080
 
-# 또는 수동 실행
-# 터미널 1: Engine
-./bin/anemone-engine > logs/engine.log 2>&1 &
+# 7. Discord 봇 실행
+cd discord-bot
+npm start
 
-# 터미널 2: Renderer
-./bin/anemone-renderer > logs/renderer.log 2>&1 &
-
-# 터미널 3: Gateway
-./bin/anemone-gateway
+# 8. WebSocket 서버 실행
+cd ws-server
+pnpm dev
 ```
 
-### 4. 브라우저 접속
-
-```
-http://localhost:8080
-```
-
----
-
-## 📖 사용 가이드
-
-### 위키 페이지 작성
-
-1. **새 페이지 생성**: `/wiki` → "새 페이지" 버튼
-2. **나무마크 작성**:
-   ```
-   == 제목 ==
-   === 소제목 ===
-   
-   '''굵게''' ''기울임'' ~~취소선~~
-   
-   [[링크:다른_페이지]]
-   [[https://example.com|외부 링크]]
-   
-   * 목록 1
-   * 목록 2
-   
-   {{{#!syntax python
-   def hello():
-       print("Hello, Ryllis!")
-   }}}
-   ```
-3. **저장 & 버전 관리**: 자동 버전 추적
-
-### 블로그 포스트 작성
-
-1. **새 포스트**: `/blog` → "새 포스트" 버튼
-2. **마크다운 작성**:
-   ```markdown
-   # 제목
-   ## 소제목
-   
-   **굵게** *기울임*
-   
-   - 목록
-   - 항목
-   
-   ```code
-   console.log('Hello');
-   ```
-   ```
-3. **카테고리 & 태그**: 분류 및 검색 최적화
-
-### 사용자 관리
+### Docker 실행 (권장)
 
 ```bash
-# 관리자 계정 생성 (첫 실행 시)
-curl -X POST http://localhost:8080/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "admin",
-    "password": "secure_password",
-    "email": "admin@example.com",
-    "role": "admin"
-  }'
-```
+# neoTrinity
+cd neotrinity
+docker-compose up -d
 
-### 권한 관리
-
-- **Admin**: 모든 권한
-- **Editor**: 문서 생성/수정
-- **Viewer**: 읽기 전용
-
----
-
-## 🛠️ 개발
-
-### 프로젝트 구조
-
-```
-ryllis/
-├── bin/                    # 빌드된 바이너리
-├── engine/                 # 백엔드 엔진
-│   ├── main.go            # 메인 진입점
-│   ├── database.go        # DB 연결
-│   ├── auth.go            # 인증 로직
-│   ├── handler/           # API 핸들러
-│   └── models/            # 데이터 모델
-├── renderer/              # 프론트엔드 렌더러
-│   ├── main.go           # 렌더러 서버
-│   ├── ssr.go            # SSR 로직
-│   └── react/            # React 앱
-│       ├── src/
-│       │   ├── pages/    # 페이지 컴포넌트
-│       │   ├── components/  # UI 컴포넌트
-│       │   └── utils/    # 유틸리티
-│       └── dist/         # 빌드 결과물
-├── gateway/               # HTTP 게이트웨이
-│   └── main.go
-├── site/                  # 사이트 선언
-│   └── sites/
-│       └── main.ruststx  # 라우트 정의
-├── vendor/                # 공통 모듈
-│   ├── rsock/            # UDP 소켓
-│   ├── http/             # HTTP 클라이언트
-│   └── db/               # DB 유틸리티
-└── Makefile              # 빌드 자동화
-```
-
-### 개발 명령어
-
-```bash
-# 전체 빌드
-make build
-
-# 개발 모드 (Hot Reload)
-make dev
-
-# React 개발 서버
-cd renderer/react && npm run dev
-
-# 서비스 정지
-make stop
+# kidszzanggame
+cd kidszzanggame
+docker-compose up -d
 
 # 로그 확인
-tail -f logs/engine.log
-tail -f logs/renderer.log
-tail -f logs/gateway.log
-
-# 데이터베이스 초기화
-psql blogs < db_reset.sql
-```
-
-### API 테스트
-
-```bash
-# 블로그 목록
-curl http://localhost:8080/api/blog/list
-
-# 위키 페이지 조회
-curl http://localhost:8080/api/wiki/get?slug=home
-
-# 검색
-curl http://localhost:8080/api/search?q=keyword
+docker-compose logs -f
 ```
 
 ---
 
-## 🔌 RSock 프로토콜
+## 🔐 환경 변수
 
-Ryllis의 핵심 통신 프로토콜
+각 프로젝트는 독립적인 환경 변수가 필요합니다.
 
-### 패킷 구조
-
-#### 요청 패킷
-```
-[2 bytes: route length][n bytes: route][m bytes: payload]
-```
-
-#### 응답 패킷
-```
-[2 bytes: status code][2 bytes: error length][n bytes: error][data]
+### 공통 (Supabase)
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://api.zuzunza.com
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ```
 
-### 예제
-
-```go
-// Gateway → Engine 요청
-resp, err := sock.Send("127.0.0.1:9001", "/api/wiki/get", jsonPayload)
-
-// Engine에서 핸들러 등록
-rsock.Register("/api/wiki/get", func(req *Request) (*Response, error) {
-    // 위키 페이지 조회 로직
-    return &Response{StatusCode: 200, Data: wikiData}, nil
-})
+### neoTrinity 추가
+```env
+REDIS_URL=redis://localhost:6379
+SESSION_SECRET=your-session-secret
+CLOUDFLARE_ACCOUNT_ID=your-account-id
+CLOUDFLARE_STREAM_API_TOKEN=your-token
 ```
 
----
-
-## 📊 데이터베이스 스키마
-
-### 주요 테이블
-
-#### blog_posts (블로그 포스트)
-```sql
-- id (SERIAL PRIMARY KEY)
-- title (VARCHAR)
-- content (TEXT)
-- author (VARCHAR)
-- category (VARCHAR)
-- tags (TEXT[])
-- view_count (INTEGER)
-- is_published (BOOLEAN)
-- created_at, updated_at (TIMESTAMP)
+### kidszzanggame 추가
+```env
+ABLY_API_KEY=your-ably-key
+AWS_ACCESS_KEY_ID=your-aws-key
+AWS_SECRET_ACCESS_KEY=your-aws-secret
 ```
 
-#### wiki_pages (위키 페이지)
-```sql
-- id (SERIAL PRIMARY KEY)
-- title (VARCHAR)
-- slug (VARCHAR UNIQUE)
-- content (TEXT)
-- editor (VARCHAR)
-- version (INTEGER)
-- parent_id (INTEGER)
-- view_count (INTEGER)
-- is_protected (BOOLEAN)
-- protection_level (VARCHAR)
-- tags (TEXT[])
-- created_at, updated_at (TIMESTAMP)
-```
-
-#### users (사용자)
-```sql
-- id (SERIAL PRIMARY KEY)
-- username (VARCHAR UNIQUE)
-- email (VARCHAR UNIQUE)
-- password_hash (VARCHAR)
-- role (VARCHAR)
-- created_at (TIMESTAMP)
-```
-
-#### acl (접근 제어 목록)
-```sql
-- id (SERIAL PRIMARY KEY)
-- resource_type (VARCHAR)
-- resource_id (INTEGER)
-- user_id (INTEGER)
-- permission (VARCHAR)
+### Ryllis 추가
+```env
+DATABASE_URL=postgresql://user:pass@localhost:5432/blogs
+JWT_SECRET=your-jwt-secret
+GATEWAY_PORT=8080
+ENGINE_PORT=9001
+RENDERER_PORT=9002
 ```
 
 ---
 
-## 🔒 보안
+## 📊 플랫폼 통계
 
-### 인증
-- **JWT 토큰**: 안전한 인증
-- **BCrypt 해싱**: 비밀번호 암호화
-- **토큰 만료**: 자동 세션 관리
+### 사용자 활동
+- **콘텐츠 타입**: 아트워크, 동영상, 텍스트, 게임
+- **실시간 기능**: 1:1 통화, 그룹 통화, 라이브 방송, 채팅
+- **소셜 기능**: 팔로우, 서버, 크루, 챌린지
 
-### 권한
-- **ACL 시스템**: 문서별 권한 제어
-- **역할 기반**: Admin, Editor, Viewer
-- **보호된 문서**: 읽기/쓰기 제한
-
-### 네트워크
-- **로컬 소켓**: 127.0.0.1만 허용
-- **입력 검증**: SQL 인젝션, XSS 방어
-- **Rate Limiting**: DDoS 방어 (예정)
-
----
-
-## 📈 성능
-
-### 벤치마크 (예상)
-
-| 지표 | 값 |
-|------|-----|
-| 평균 응답 시간 | < 10ms |
-| 최대 처리량 | 10,000+ req/s |
-| 메모리 사용량 | < 100MB |
-| 동시 연결 | 무제한 (UDP) |
-
-### 최적화
-- UDP 소켓으로 TCP 오버헤드 제거
-- 템플릿 캐싱
-- 데이터베이스 인덱싱
-- 고루틴 병렬 처리
-
----
-
-## 🔧 설정
-
-### 환경 변수
-
-```bash
-# 데이터베이스
-export DATABASE_URL="host=localhost port=5432 user=postgres password=yourpass dbname=blogs sslmode=disable"
-
-# JWT
-export JWT_SECRET="your-secret-key-here"
-
-# 서버 포트
-export GATEWAY_PORT=8080
-export ENGINE_PORT=9001
-export RENDERER_PORT=9002
-```
-
-### .ruststx 라우트 설정
-
-```ruststx
-@site {
-  name: "Ryllis"
-  description: "Wiki + Blog Platform"
-}
-
-@route GET / {
-  handler: "HomeHandler"
-  template: "index.html"
-}
-
-@route GET /wiki/:slug {
-  handler: "WikiDetailHandler"
-  template: "index.html"
-  middleware: "auth"
-}
-```
-
----
-
-## 🚧 로드맵
-
-### v1.1 (예정)
-- [ ] WebSocket 지원 (실시간 협업 편집)
-- [ ] 파일 업로드 (이미지, 문서)
-- [ ] 댓글 시스템
-- [ ] RSS 피드
-
-### v1.2 (예정)
-- [ ] 다국어 지원 (i18n)
-- [ ] 테마 시스템
-- [ ] 플러그인 아키텍처
-- [ ] 전체 텍스트 검색 (ElasticSearch)
-
-### v2.0 (예정)
-- [ ] 분산 환경 지원
-- [ ] Redis 캐싱
-- [ ] 모니터링 대시보드
-- [ ] GraphQL API
-
----
-
-## 📚 문서
-
-- [빠른 시작 가이드](ryllis/QUICKSTART.md)
-- [설치 가이드](ryllis/SETUP.md)
-- [기술 명세서](ryllis/TECHNICAL_SPEC.md)
-- [프레임워크 가이드](ryllis/FRAMEWORK.md)
-- [마이그레이션 요약](ryllis/MIGRATION_SUMMARY.md)
-- [API 테스트](ryllis/API_TEST.md)
-- [인증 설정](ryllis/AUTHENTICATION_SETUP.md)
+### 기술 성능
+- **평균 응답 시간**: < 1000ms (Next.js), < 10ms (Ryllis 목표)
+- **동시 접속**: 무제한 (분산 아키텍처)
+- **실시간 메시지**: Socket.IO, Ably 기반
 
 ---
 
 ## 🤝 기여
 
-이슈 및 Pull Request를 환영합니다!
-
-### 기여 방법
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
-
-## 📄 라이선스
-
-MIT License
-
-Copyright (c) 2025 Ryllis
-
----
-
-## 💬 커뮤니티
-
-- **GitHub Issues**: 버그 리포트, 기능 제안
-- **Discussions**: 질문, 아이디어 공유
-
----
-
-## 🙏 감사의 말
-
-Ryllis는 다음 오픈소스 프로젝트에 기반합니다:
-
-- **Anemone Framework**: 모듈형 마이크로서비스 아키텍처
-- **React**: UI 라이브러리
-- **Go**: 백엔드 언어
-- **PostgreSQL**: 데이터베이스
-- **Vite**: 빌드 도구
-- **Tailwind CSS**: 스타일링
-- **shadcn/ui**: UI 컴포넌트
-
----
+주전자닷컴은 비공개 프로젝트입니다. 내부 팀원만 기여 가능합니다.
 
 <div align="center">
 
-**Ryllis** - React-Yield Lightweight Logic Integration System 🌸
+**주전자닷컴** - 창작자를 위한 통합 커뮤니티 플랫폼 🫖
 
-*빠르고, 현대적이고, 확장 가능한 위키 엔진*
+*연결하고, 창작하고, 성장하는 공간*
 
-[시작하기](ryllis/QUICKSTART.md) · [문서](ryllis/TECHNICAL_SPEC.md) · [기여하기](#기여)
+[neoTrinity](neotrinity/) · [kidszzanggame](kidszzanggame/) · [Ryllis 위키](ryllis/)
 
-Made with ❤️ by the Ryllis team
+---
+
+### 🔄 현재 진행 중
+
+**NextJS → Ryllis 마이그레이션**
+
+기존 기능을 유지하면서 고성능 Ryllis 엔진으로 전환 중입니다.
+
+---
+
+Made with ❤️ by Zuzunza Team
 
 </div>
+
