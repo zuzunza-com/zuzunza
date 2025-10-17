@@ -437,19 +437,5 @@ RENDERER_PORT=9002
 
 *연결하고, 창작하고, 성장하는 공간*
 
-[neoTrinity](neotrinity/) · [kidszzanggame](kidszzanggame/) · [Ryllis 위키](ryllis/)
-
----
-
-### 🔄 현재 진행 중
-
-**NextJS → Ryllis 마이그레이션**
-
-기존 기능을 유지하면서 고성능 Ryllis 엔진으로 전환 중입니다.
-
----
-
-Made with ❤️ by Zuzunza Team
-
 </div>
 
