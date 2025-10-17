@@ -17,3 +17,11 @@
 [submodule "kidszzanggame"]
 	path = kidszzanggame
 	url = https://github.com/NiSeullent/kidszzanggame
+
+[submodule "shared-lib"]
+	path = shared-lib
+	url = https://github.com/NiSeullent/shared-lib
+
+[submodule "ryllis"]
+	path = ryllis
+	url = https://github.com/NiSeullent/ryllis
