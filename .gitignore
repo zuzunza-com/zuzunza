@@ -1,0 +1,21 @@
+# Gateway 폴더 전체 제외
+gateway/
+blogs/
+database
+dumps/
+fallback-site/
+ryllis/
+# 환경 변수 파일 (민감 정보 보호)
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+shared-lib/
+
+# 기타 일반적인 제외 파일들
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
