@@ -1,0 +1,11 @@
+[submodule "app-studio"]
+	path = app-studio
+	url = https://github.com/zuzunza-com/zuzunza_studio
+
+[submodule "app"]
+	path = app
+	url = https://github.com/zuzunza-com/zuzunza_core
+
+[submodule "zetrafi"]
+	path = zetrafi
+	url = https://github.com/zuzunza-com/zetrafi
