@@ -1,8 +1,8 @@
-[submodule "app-studio"]
+[submodule "zuzunza_studio"]
 	path = app-studio
 	url = https://github.com/zuzunza-com/zuzunza_studio
 
-[submodule "app"]
+[submodule "zuzunza_core"]
 	path = app
 	url = https://github.com/zuzunza-com/zuzunza_core
 
