@@ -1,0 +1,23 @@
+packages:
+  - app
+  - app-studio
+  - palcon
+  - dyllis-ditto/server
+
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - '@swc/core'
+  - bun
+  - core-js
+  - esbuild
+  - sharp
+  - unrs-resolver
+  - pg
+  - pg-native
+  - mysql2
+  - bcryptjs
+  - better-sqlite3
+  - canvas
+  - sqlite3
+  - node-gyp
+  - fsevents

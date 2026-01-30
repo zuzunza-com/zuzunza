@@ -1,0 +1,18 @@
+{
+  "name": "dyllis-root",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "preinstall": "node ./scripts/enforce-pnpm.js",
+    "install-all": "pnpm install -w",
+    "start:palcon": "pnpm --filter palcon start",
+    "start:app": "pnpm --filter application dev",
+    "start:all": "pnpm -w -r --parallel start",
+    "build-all": "pnpm -w -r build",
+    "types:generate": "npx supabase gen types typescript --db-url 'postgresql://postgres.local:J7x9Qw3ZsN4vLp8Rk2Tm6Hg1BcY5Vu0D@127.0.0.1:5100/postgres?sslmode=disable' --schema dyllisc > ./app/lib/database.types.ts"
+  },
+  "dependencies": {
+    "ioredis": "^5.8.2",
+    "lucide-react": "^0.562.0"
+  }
+}
