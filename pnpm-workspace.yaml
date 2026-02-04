@@ -1,5 +1,7 @@
 packages:
   - app
+  - app-serven
+  - app-discord
   - app-studio
   - palcon
   - dyllis-ditto/server

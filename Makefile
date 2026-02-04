@@ -23,7 +23,7 @@ su -l $(PM2_USER) -c '$(1) PM2_HOME=$(PM2_HOME) pm2 $(2)'
 endef
 
 .DEFAULT_GOAL := help
-.PHONY: help install all all-up install-deps palcon-start palcon-pm2-start palcon-pm2-stop app-start app-pm2-stop legacy-start legacy-stop admin build build-modern build-legacy build-server build-and-start ensure-pm2-user ditto-debug studio-start studio-stop build-studio build-all
+.PHONY: help install all all-up install-deps palcon-start palcon-pm2-start palcon-pm2-stop discord-pm2-start discord-pm2-stop app-start app-pm2-stop legacy-start legacy-stop admin build build-modern build-legacy build-server build-and-start ensure-pm2-user ditto-debug studio-start studio-stop build-studio build-all
 
 help:
 	@echo "Dyllis Makefile"
@@ -32,6 +32,7 @@ help:
 	@echo "  make install        Run initial setup (license required)"
 	@echo ""
 	@echo "Build & Deploy:"
+	@echo "  make all            Build and deploy ALL services (app + studio + discord)"
 	@echo "  make build-studio   Build Studio app"
 	@echo "  make build          Build main app"
 	@echo "  make build-server   Build Ditto Server"
@@ -42,6 +43,8 @@ help:
 	@echo "  make studio-stop    Stop Studio Server"
 	@echo "  make app-start      Start Ditto Server"
 	@echo "  make app-pm2-stop   Stop Ditto Server"
+	@echo "  make discord-pm2-start   Start Discord Bot"
+	@echo "  make discord-pm2-stop    Stop Discord Bot"
 	@echo ""
 	@echo "Direct PM2 access: su -l $(PM2_USER) -c 'pm2 list'"
 
@@ -175,10 +178,13 @@ build-and-start: build build-server app-start
 	@echo "================================"
 	@$(call pm2_run,ls)
 
-all: install-all build-all app-start palcon-pm2-start
+all: build-all app-start studio-start discord-pm2-start
 	@echo ""
 	@echo "================================"
-	@echo "All services started!"
+	@echo "✅ All services built and started!"
+	@echo "  - Main App (dyllis-ditto)"
+	@echo "  - Studio (dyllis-studio)"
+	@echo "  - Discord Bot (dyllis-discord-bot)"
 	@echo "================================"
 	@$(call pm2_run,ls)
 
@@ -207,6 +213,18 @@ palcon-pm2-stop: ensure-pm2-user
 	@echo "Stop palcon PM2 process"
 	@$(call pm2_run,stop dyllis-palcon) || true
 	@$(call pm2_run,delete dyllis-palcon) || true
+	@$(call pm2_run,save) || true
+
+discord-pm2-start: ensure-pm2-user
+	@echo "Start Discord Bot via PM2 (as $(PM2_USER) user)"
+	@cd $(ROOT_DIR)/app-discord && pnpm install
+	@$(call pm2_env_run,cd $(ROOT_DIR)/app-discord &&,start ecosystem.config.js)
+	@$(call pm2_run,save)
+
+discord-pm2-stop: ensure-pm2-user
+	@echo "Stop Discord Bot PM2 process"
+	@$(call pm2_run,stop dyllis-discord-bot) || true
+	@$(call pm2_run,delete dyllis-discord-bot) || true
 	@$(call pm2_run,save) || true
 
 app-start: ensure-pm2-user
