@@ -9,3 +9,11 @@
 [submodule "zetrafi"]
 	path = zetrafi
 	url = https://github.com/zuzunza-com/zetrafi
+
+[submodule "zuzunza_discord"]
+	path = app-discord
+	url = https://github.com/zuzunza-com/zuzunza_discord
+
+[submodule "dyllis-core-serven"]
+	path = app-serven
+	url = https://github.com/zuzunza-com/dyllis-core-serven
