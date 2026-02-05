@@ -17,3 +17,11 @@
 [submodule "dyllis-core-serven"]
 	path = app-serven
 	url = https://github.com/zuzunza-com/dyllis-core-serven
+
+[submodule "dyllis-core-backend"]
+	path = app-backend
+	url = https://github.com/zuzunza-com/dyllis-core-backend
+
+[submodule "zuzunza-docs"]
+	path = docs
+	url = https://github.com/zuzunza-com/zuzunza-docs
