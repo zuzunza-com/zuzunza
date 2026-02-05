@@ -24,4 +24,8 @@
 
 [submodule "zuzunza-docs"]
 	path = docs
-	url = https://github.com/zuzunza-com/zuzunza-docs
+	url = https://github.com/zuzunza-com/zuzunza-doc
+
+[submodule "dyllis-swifton-mkxp"]
+	path = mkxp-palcon
+	url = https://github.com/zuzunza-com/dyllis-swifton-mkxp
