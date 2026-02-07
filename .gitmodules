@@ -2,30 +2,30 @@
 	path = app-studio
 	url = https://github.com/zuzunza-com/zuzunza_studio
 
-[submodule "zuzunza_core"]
+[submodule "memphis-core-app"]
 	path = app
-	url = https://github.com/zuzunza-com/zuzunza_core
+	url = https://github.com/zuzunza-com/memphis-core-app
 
-[submodule "zetrafi"]
+[submodule "memphis-api"]
 	path = zetrafi
-	url = https://github.com/zuzunza-com/zetrafi
+	url = https://github.com/zuzunza-com/memphis-api
 
-[submodule "zuzunza_discord"]
+[submodule "memphis-core-discord"]
 	path = app-discord
-	url = https://github.com/zuzunza-com/zuzunza_discord
+	url = https://github.com/zuzunza-com/memphis-core-discord
 
-[submodule "dyllis-core-serven"]
+[submodule "memphis-core-serven"]
 	path = app-serven
-	url = https://github.com/zuzunza-com/dyllis-core-serven
+	url = https://github.com/zuzunza-com/memphis-core-serven
 
-[submodule "dyllis-core-backend"]
+[submodule "memphis-core-server"]
 	path = app-backend
-	url = https://github.com/zuzunza-com/dyllis-core-backend
+	url = https://github.com/zuzunza-com/memphis-core-server
 
-[submodule "zuzunza-docs"]
+[submodule "memphis-core-wiki"]
 	path = docs
-	url = https://github.com/zuzunza-com/zuzunza-doc
+	url = https://github.com/zuzunza-com/memphis-core-wiki
 
-[submodule "dyllis-swifton-mkxp"]
+[submodule "memphis-swifton"]
 	path = mkxp-palcon
-	url = https://github.com/zuzunza-com/dyllis-swifton-mkxp
+	url = https://github.com/zuzunza-com/memphis-swifton
