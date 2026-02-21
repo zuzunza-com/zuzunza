@@ -1,45 +1,36 @@
+# Parent meta-repo ignore
+.DS_Store
+*.log
+*.tmp
+*.swp
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.secret
+*.token
+
+# Build/cache
 node_modules/
 **/node_modules/
-/.next/
+.next/
 dist/
-*.log
-/.env
-.env.local
-.env.development
-palcon
-legacy-server
-# Supabase
-.supabase/
-supabase/.branches/
-supabase/.temp/
-mig_before/
-palcon/public/swf
-supahost/volumes/
-!supahost/volumes/functions/zase/
-supahost/backups/
-cpanel/
-gomsee_landing/
-*.sql
-/legacy
-/temp
-/supahost
-/supabase
-/scripts
-/refference
-/nginx
-/httpd
-/.vscode/
-/.claude
-/extension
-dyllis-ditto/compile
-dyllis-ditto/server
-dyllis-ditto/studio-compile
-dyllis-ditto/serven-compile
+build/
+coverage/
+
+# OS/editor
+.vscode/
+.idea/
+
+# Runtime
 tmp/
-*.pyc
-sub/
-*.md
-!README.md
-wiki
-mkxp-palcon
-packages/
+logs/
+*.pid
+
+# Keep docs and policy files tracked by default

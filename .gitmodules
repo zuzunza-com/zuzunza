@@ -1,31 +1,27 @@
-[submodule "zuzunza_studio"]
-	path = app-studio
-	url = https://github.com/zuzunza-com/zuzunza_studio
-
-[submodule "memphis-core-app"]
-	path = app
-	url = https://github.com/zuzunza-com/memphis-core-app
-
-[submodule "memphis-api"]
-	path = zetrafi
-	url = https://github.com/zuzunza-com/memphis-api
-
-[submodule "memphis-core-discord"]
-	path = app-discord
-	url = https://github.com/zuzunza-com/memphis-core-discord
-
-[submodule "memphis-core-serven"]
-	path = app-serven
-	url = https://github.com/zuzunza-com/memphis-core-serven
-
-[submodule "memphis-core-server"]
-	path = app-backend
-	url = https://github.com/zuzunza-com/memphis-core-server
-
-[submodule "memphis-core-wiki"]
-	path = docs
-	url = https://github.com/zuzunza-com/memphis-core-wiki
-
-[submodule "memphis-swifton"]
-	path = mkxp-palcon
-	url = https://github.com/zuzunza-com/memphis-swifton
+[submodule "platform/zuzunza-waterscape"]
+	path = platform/zuzunza-waterscape
+	url = https://github.com/zuzunza-com/zuzunza-waterscape.git
+[submodule "platform/wscp-deploy-core"]
+	path = platform/wscp-deploy-core
+	url = https://github.com/zuzunza-com/wscp-deploy-core.git
+[submodule "platform/wscp-frontend"]
+	path = platform/wscp-frontend
+	url = https://github.com/zuzunza-com/wscp-frontend.git
+[submodule "platform/wscp-memphis-core-serven"]
+	path = platform/wscp-memphis-core-serven
+	url = https://github.com/zuzunza-com/wscp-memphis-core-serven.git
+[submodule "platform/wscp-memphis-discord-bot"]
+	path = platform/wscp-memphis-discord-bot
+	url = https://github.com/zuzunza-com/wscp-memphis-discord-bot.git
+[submodule "platform/wscp-library"]
+	path = platform/wscp-library
+	url = https://github.com/zuzunza-com/wscp-library.git
+[submodule "platform/wscp-middleware"]
+	path = platform/wscp-middleware
+	url = https://github.com/zuzunza-com/wscp-middleware.git
+[submodule "platform/wscp-servgate"]
+	path = platform/wscp-servgate
+	url = https://github.com/zuzunza-com/wscp-servgate.git
+[submodule "platform/wscp-gateware"]
+	path = platform/wscp-gateware
+	url = https://github.com/zuzunza-com/wscp-gateware.git
