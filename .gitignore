@@ -34,3 +34,23 @@ logs/
 *.pid
 
 # Keep docs and policy files tracked by default
+
+# Hard-block: legacy / non-meta artifacts that must not return
+package.json
+package-lock.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
+bun.lock
+Makefile
+.npmrc
+.license
+redis.conf
+dyllis-ditto/
+
+# Hard-block: any auth/secret material pattern beyond above
+*.priv
+id_rsa
+id_ed25519
+*.kdbx
+.envrc
+

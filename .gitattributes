@@ -1,0 +1,8 @@
+# Force LF for everything text-y in the meta repo.
+* text=auto eol=lf
+
+# Lock the meta layout to docs/markdown only.
+*.md     diff=markdown
+*.txt    text
+.gitmodules text
+LICENSE  text

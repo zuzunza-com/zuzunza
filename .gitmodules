@@ -1,27 +1,12 @@
 [submodule "platform/zuzunza-waterscape"]
 	path = platform/zuzunza-waterscape
 	url = https://github.com/zuzunza-com/zuzunza-waterscape.git
-[submodule "platform/wscp-deploy-core"]
-	path = platform/wscp-deploy-core
-	url = https://github.com/zuzunza-com/wscp-deploy-core.git
-[submodule "platform/wscp-frontend"]
-	path = platform/wscp-frontend
-	url = https://github.com/zuzunza-com/wscp-frontend.git
-[submodule "platform/wscp-memphis-core-serven"]
-	path = platform/wscp-memphis-core-serven
-	url = https://github.com/zuzunza-com/wscp-memphis-core-serven.git
-[submodule "platform/wscp-memphis-discord-bot"]
-	path = platform/wscp-memphis-discord-bot
-	url = https://github.com/zuzunza-com/wscp-memphis-discord-bot.git
-[submodule "platform/wscp-library"]
-	path = platform/wscp-library
-	url = https://github.com/zuzunza-com/wscp-library.git
-[submodule "platform/wscp-middleware"]
-	path = platform/wscp-middleware
-	url = https://github.com/zuzunza-com/wscp-middleware.git
-[submodule "platform/wscp-servgate"]
-	path = platform/wscp-servgate
-	url = https://github.com/zuzunza-com/wscp-servgate.git
-[submodule "platform/wscp-gateware"]
-	path = platform/wscp-gateware
-	url = https://github.com/zuzunza-com/wscp-gateware.git
+	branch = develop
+[submodule "platform/zuzunza-ruffle"]
+	path = platform/zuzunza-ruffle
+	url = https://github.com/zuzunza-com/zuzunza-ruffle.git
+	branch = master
+[submodule "platform/zuzunza-cypaper"]
+	path = platform/zuzunza-cypaper
+	url = https://github.com/zuzunza-com/zuzunza-cypaper.git
+	branch = main
